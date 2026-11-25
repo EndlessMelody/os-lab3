@@ -31,6 +31,8 @@ jobs:
           sudo apt-get install -y build-essential gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu qemu-system-misc gdb-multiarch perl python3
       - name: Clean build and inherited Lab 1-2 checks
         run: python3 tools/verify-lab03.py
+      - name: Verify shared PID page and lifecycle
+        run: make check-ugetpid
       - name: Upload verification logs
         if: always()
         uses: actions/upload-artifact@v4

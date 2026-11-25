@@ -6,7 +6,7 @@
 #include "user/user.h"
 
 // User helper described as supplied by the course assignment.
-// Task 4.1 must supply the read-only per-process mapping before this can run.
+// The kernel maintains this read-only mapping throughout the process lifetime.
 int
 ugetpid(void)
 {

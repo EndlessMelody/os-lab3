@@ -54,11 +54,12 @@
 //   fixed-size stack
 //   expandable heap
 //   ...
+//   USYSCALL (read-only PID page, private to each process)
 //   TRAPFRAME (p->trapframe, used by the trampoline)
 //   TRAMPOLINE (the same page as in the kernel)
 #define TRAPFRAME (TRAMPOLINE - PGSIZE)
 
-// Lab 3 shared interface; allocating/mapping this page is task 4.1.
+// Lab 3 shared interface, mapped user-readable but not writable/executable.
 #define USYSCALL (TRAPFRAME - PGSIZE)
 
 #ifndef __ASSEMBLER__

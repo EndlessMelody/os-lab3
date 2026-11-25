@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+"""Part 4.1: shared PID identity, permissions and allocation/exec cleanup."""
+
+import re
+import subprocess
+from pathlib import Path
+from gradelib import *
+
+evidence = Path('artifacts/lab3/ugetpid')
+evidence.mkdir(parents=True, exist_ok=True)
+r = Runner()
+
+
+def boot(group, fault=None):
+    subprocess.run(['make', '-s', 'user/_ugetpidcheck'], check=True)
+    maybe_unlink('fs.img')
+    r.run_qemu(save(str(evidence / (group + '.txt'))),
+               shell_script(['ugetpidcheck ' + group]),
+               make_args=['UEXTRA=user/xargstest.sh user/_ugetpidcheck'], timeout=120)
+    r.match('^UGETPID_' + group.upper() + '_OK$',
+            no=['UGETPID_FAIL:', 'panic:', 'exec .* failed'])
+    # Only the two permission checks may deliberately trigger a user trap.
+    causes = re.findall(r'^usertrap\(\): unexpected scause (0x[0-9a-f]+) pid=\d+$',
+                        r.qemu.output, re.M)
+    assert_equal(causes, [fault] if fault else [])
+    if fault:
+        r.match(r'^ *sepc=0x[0-9a-f]+ stval=0x3fffffd000$')
+
+
+@test(10, 'ugetpid supplied scaffold test')
+def test_scaffold():
+    maybe_unlink('fs.img')
+    r.run_qemu(save(str(evidence / 'pgtbltest.txt')),
+               shell_script(['pgtbltest ugetpid']))
+    r.match('^ugetpid_test: OK$', no=['PGTBL_FAIL:', 'panic:', r'usertrap\('])
+
+
+@test(10, 'ugetpid fast path does not issue getpid syscalls')
+def test_fastpath():
+    boot('fastpath')
+    r.match(no=[r'^\d+: syscall getpid ->'])
+
+
+@test(10, 'ugetpid page initialization, process-slot reuse and leaks')
+def test_lifecycle():
+    boot('lifecycle')
+
+
+@test(10, 'ugetpid concurrent process isolation')
+def test_concurrent():
+    boot('concurrent')
+
+
+@test(15, 'ugetpid successful and failed exec ownership')
+def test_exec():
+    boot('exec')
+
+
+@test(15, 'ugetpid user store and kernel copyout protection')
+def test_readonly():
+    boot('readonly', fault='0xf')
+
+
+@test(10, 'ugetpid page is not executable')
+def test_nx():
+    boot('nx', fault='0xc')
+
+
+@test(20, 'ugetpid low-memory fork rollback and complete cleanup')
+def test_oom():
+    boot('oom')
+    values = [int(v) for v in re.findall(r'^UGETPID_OOM_SPARE: (\d+) bytes$',
+                                       r.qemu.output, re.M)]
+    assert_equal(len(values), 10)
+    # A failed heap mapping can leave a spare data page when the next page
+    # also needs page-table allocation; account for toolchain-dependent layout.
+    assert_equal(0 <= values[0] <= 2 * 4096, True)
+    assert_equal(values, [values[0] + 4096 * i for i in range(10)])
+
+
+run_tests()

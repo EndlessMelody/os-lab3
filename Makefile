@@ -187,6 +187,9 @@ $U/_lab02check: tests/lab02check.o $(ULIB)
 $U/_pstreeformat: tests/pstreeformat.o $(ULIB)
 	$(LD) $(LDFLAGS) -T $U/user.ld -o $@ $^
 
+$U/_ugetpidcheck: tests/ugetpidcheck.o $(ULIB)
+	$(LD) $(LDFLAGS) -T $U/user.ld -o $@ $^
+
 mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 	gcc $(XCFLAGS) -Werror -Wall -I. -o mkfs/mkfs mkfs/mkfs.c
 
@@ -388,6 +391,9 @@ check-lab02:
 check-lab03:
 	./grade-lab-pgtbl $(GRADEFLAGS)
 
+check-ugetpid:
+	./grade-lab03-ugetpid $(GRADEFLAGS)
+
 # Always execute in order: the graders share fs.img and QEMU's GDB port.
 check-regression:
 	$(MAKE) check-lab01
@@ -423,4 +429,4 @@ submit-check:
 zipball: clean submit-check
 	git archive --verbose --format zip --output lab.zip HEAD
 
-.PHONY: zipball clean grade check-lab01 check-trace check-lab02 check-lab03 check-regression submit-check
+.PHONY: zipball clean grade check-lab01 check-trace check-lab02 check-lab03 check-ugetpid check-regression submit-check
