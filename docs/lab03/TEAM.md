@@ -86,7 +86,7 @@ fork/exec/exit, biên và tham số lỗi theo phần phụ trách. Log thật v
 Tác giả tự test chưa thay review của người được phân công.
 
 CI mặc định kiểm tra clean build + hồi quy Lab 1–2. Bộ khung chưa làm ba phần
-kernel nên job Page Table chỉ chạy khi bấm **Run workflow** trên GitHub Actions.
+kernel nên job Page Table chỉ chạy khi bấm **Run workflow** và chọn ô `pgtbl` trên GitHub Actions.
 Trước code freeze, Bảo Trân chạy workflow trên `main`, yêu cầu cả `regression` và
 `pgtbl` đạt, đồng thời chạy `pgtbltest` trên bản tích hợp. Khi đủ ba tính năng,
 bỏ điều kiện `if` của job `pgtbl` để bật kiểm tra tự động cho push/PR.

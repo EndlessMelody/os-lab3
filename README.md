@@ -8,6 +8,7 @@ commit `1c503f0afc41a203de08b4cc66dadb1db506f7df`, bao gồm tiện ích
 - [Đề chính thức](Lab3_OS_PageTable.pdf) và [hướng dẫn](<Hướng dẫn project 3 - PageTable.pdf>).
 - [Phân công nhóm](Lab3_PageTable_PhanCong.html), [quy ước bàn giao](docs/lab03/TEAM.md), [checklist](Task.md).
 - [Baseline, phạm vi dọn dẹp và cách lấy tài nguyên cũ](docs/lab03/BASELINE.md).
+- [Biên bản kiểm tra và bàn giao DevOps](docs/lab03/DEVOPS.md).
 
 ## Lấy source và build
 
@@ -59,7 +60,7 @@ của giảng viên/MIT**. Cần bổ sung test quyền trang và tham số lỗ
 đầu, ba test Lab 3 dự kiến FAIL vì chưa triển khai nhiệm vụ kernel.
 
 CI tự chạy build + hồi quy khi push ba branch hoặc mở PR vào `main`; log lưu trong
-GitHub Actions artifacts. Chạy workflow thủ công để bật thêm job chấm Page Table;
+GitHub Actions artifacts. Chạy workflow thủ công và chọn ô `pgtbl` để bật thêm job chấm Page Table;
 job này phải đạt trước code freeze. CI hồi quy xanh chưa xác nhận Lab 3 hoàn thành.
 Log local ở `artifacts/`, không tự commit. Chỉ commit minh chứng đã chọn vào
 `docs/lab03/evidence/`. Grader dùng chung `fs.img` và cổng GDB, chạy tuần tự và tắt

@@ -23,6 +23,6 @@ review chéo, báo cáo hay gói nộp Lab 3. Log Page Table xác nhận shared 
 
 CI mặc định kiểm tra build + hồi quy trên source commit ở GitHub. Trạng thái thực
 tế xem ở [GitHub Actions](https://github.com/EndlessMelody/os-lab3/actions).
-Job Page Table bật thủ công trong giai đoạn scaffold; trước chốt bài phải đạt
+Job Page Table bật thủ công bằng ô `pgtbl` trong giai đoạn scaffold; trước chốt bài phải đạt
 đầy đủ theo [TEAM.md](TEAM.md). Quy tắc review hiện được ghi trong tài liệu và
 mẫu PR; chưa cấu hình branch protection/quyền thành viên trên GitHub.
