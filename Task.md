@@ -11,7 +11,7 @@ Ngày chuẩn bị: 25/11/2026. Chỉ đánh dấu kết quả code, test và re
 - [x] Đổi cấu hình và hướng dẫn sang repository `EndlessMelody/os-lab3`.
 - [x] Chuẩn bị giao diện chung, test nội bộ, CI build + hồi quy và mẫu PR.
 - [x] Build sạch và 33 nhóm test hồi quy đạt; Page Table 0/100 đúng trạng thái scaffold.
-- [ ] Push `main`, `lab3-base`, `lab3-start` và ba branch cá nhân lên GitHub.
+- [x] Đã push `main`, `lab3-base`, `lab3-start` và ba branch cá nhân lên GitHub.
 
 ## Đăng Khoa — 4.1, branch `lab3-ugetpid`
 

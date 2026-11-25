@@ -1,7 +1,8 @@
 # Bàn giao bộ khung DevOps — 25/11/2026
 
 Đã chuyển `origin` sang `EndlessMelody/os-lab3`, giữ remote cũ tên `lab2` và lịch
-sử Lab 1–2. Phạm vi dọn dẹp/khôi phục nằm trong [BASELINE.md](BASELINE.md).
+sử Lab 1–2. Đã push thành công `main`, `lab3-ugetpid`, `lab3-vmprint`,
+`lab3-pgaccess` và hai tag `lab3-base` / `lab3-start`; commit bộ khung là `082f7c0`. Phạm vi dọn dẹp/khôi phục nằm trong [BASELINE.md](BASELINE.md).
 
 Kết quả local trên source chuẩn bị, trước khi tạo commit/tag bàn giao:
 
