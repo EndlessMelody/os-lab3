@@ -1,0 +1,44 @@
+{
+  "source_commit": "cf9756f6a394d3f036919510e35c7ce6dc88f2ca",
+  "date": "2026-11-26",
+  "timezone": "Asia/Bangkok",
+  "qemu_memory_mib": 128,
+  "qemu_cpus": 3,
+  "results": {
+    "clean_build": "PASS",
+    "ugetpid_groups_passed": 8,
+    "ugetpid_score": "100/100",
+    "lab01_groups_passed": 17,
+    "trace_groups_passed": 7,
+    "lab02_groups_passed": 9,
+    "kernel_quick": "ALL TESTS PASSED",
+    "kernel_quick_test_count": 60
+  },
+  "ci_url": "https://github.com/EndlessMelody/os-lab3/actions/runs/45659671942",
+  "environment": {
+    "gcc": "riscv64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "python": "Python 3.12.3"
+  },
+  "logs_sha256": {
+    "build.txt": "1d620ae969079e63cb58d7e1d51c520f7310e426de59ee9d5e53e173946acf4f",
+    "clean.txt": "0d2214c6ece7e8a15131edc65cea5b6fd1238f852875531b51699f6d51c15265",
+    "concurrent.txt": "2f75e64aa4b3310302c8e0cd49c7205fe56ee1451ba43a6fb7dbc8035fae7923",
+    "exec.txt": "75878050de47b33a36aaaecca47f712abcfb21e147fa46e305f17fce357a88fe",
+    "fastpath.txt": "13c8169cc2bbc44443d7a402279a1af24683589f6f4085b0985b5d95ad84f310",
+    "kernel-quick.txt": "9d50977168f9125581372576b794c8fbee99bceae30dc6ff28a34380c236de02",
+    "lab01.txt": "26efb41d59153def0ad09a051ee8ec2811804763152314509a427af2df45ba32",
+    "lab02.txt": "35109d9bc422bda8b54f23af7299e5b8cb4a4dba51f552db67b2196a6bb4c631",
+    "lifecycle.txt": "cf6d1fad90afadfb14ecab758e1d41b6ad2792ba41bc8e9d373b99a9df9c3edb",
+    "nx.txt": "02ae21faa15854cdbe44a3241986e4339125ae6a1a1a3251917051285d90b18f",
+    "oom.txt": "a4c3cbd6b1a11593d29e77093ee5d05985f373727567475e54bf69049a0aa1c9",
+    "part41.txt": "03a65edf086a7538b8c34c7c319a8ffe0d08117f23d1d30936c85225a3971d7b",
+    "pgtbltest-ugetpid.txt": "ad272523465116c33b1101fbad8cc2c0abab9362a2cb32e49f3d66b2a8115148",
+    "pgtbltest.txt": "b71b7636b6e9b8cb08d85ff6be0ecb3ec18de62b424585137032a8683d807dd3",
+    "qemu-usertests.txt": "044804b914246a494accce4ad1edabaddfa21429a24dab201f313c96b7458f6c",
+    "readonly.txt": "b00a06ce25da9fb9033c67b2b5f0e4ffed0bd701b5c5c3c3bc52d7cb5e1548c5",
+    "trace.txt": "5fa7f00cf541a75d8cb0976bc01d7aacf93837d4130e69db5a10900974404b20"
+  },
+  "ci_conclusion": "success",
+  "ci_source_commit": "cf9756f6a394d3f036919510e35c7ce6dc88f2ca"
+}

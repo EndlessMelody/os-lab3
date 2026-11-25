@@ -1,0 +1,20 @@
+*** Now run 'gdb' in another window.
+
+xv6 kernel is booting
+
+hart 1 starting
+hart 2 starting
+init: starting sh
+$ ugetpidcheck oom
+UGETPID_OOM_SPARE: 0 bytes
+UGETPID_OOM_SPARE: 4096 bytes
+UGETPID_OOM_SPARE: 8192 bytes
+UGETPID_OOM_SPARE: 12288 bytes
+UGETPID_OOM_SPARE: 16384 bytes
+UGETPID_OOM_SPARE: 20480 bytes
+UGETPID_OOM_SPARE: 24576 bytes
+UGETPID_OOM_SPARE: 28672 bytes
+UGETPID_OOM_SPARE: 32768 bytes
+UGETPID_OOM_SPARE: 36864 bytes
+UGETPID_OOM_OK
+$ qemu-system-riscv64: terminating on signal 15 from pid 21128 (make)

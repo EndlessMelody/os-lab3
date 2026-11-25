@@ -59,8 +59,9 @@ Tắt QEMU tương tác trước khi chạy grader; các suite chạy lần lư�
   nằm trong user memory hợp lệ, không overflow, PTE hợp lệ có `PTE_U`.
   Tham số lỗi trả `-1` thay vì panic. Chủ phần 4.3 bổ sung test chính sách này.
 - `USYSCALL = TRAPFRAME - PGSIZE`, `struct usyscall { int pid; }` nằm trong
-  `kernel/memlayout.h`; helper `ugetpid()` đã đọc giao diện này. **Chưa có mapping**.
-  Đăng Khoa thêm page vào `struct proc`, xử lý cấp phát, quyền, lỗi và unmap/free.
+  `kernel/memlayout.h`; helper `ugetpid()` đã đọc giao diện này. Tại `lab3-start`
+  chưa có mapping; nhánh `lab3-ugetpid` đã bổ sung page vào
+  `struct proc`, cấp phát, quyền, rollback và unmap/free. Xem [bàn giao 4.1](UGETPID.md).
 - `vmprint(pagetable_t)` chưa khai báo/triển khai. Bảo Trân thêm vào `vm.c`,
   `defs.h`, gọi trong `exec.c` khi PID = 1 sau cập nhật `p->pagetable`.
 - `PTE_A` chưa định nghĩa; Nhựt Duy thêm bit 6 và xử lý accessed bits.
@@ -87,6 +88,7 @@ Tác giả tự test chưa thay review của người được phân công.
 
 CI mặc định kiểm tra clean build + hồi quy Lab 1–2. Bộ khung chưa làm ba phần
 kernel nên job Page Table chỉ chạy khi bấm **Run workflow** và chọn ô `pgtbl` trên GitHub Actions.
+Nhánh `lab3-ugetpid` bổ sung bước CI `make check-ugetpid` cho phần 4.1 đã triển khai.
 Trước code freeze, Bảo Trân chạy workflow trên `main`, yêu cầu cả `regression` và
 `pgtbl` đạt, đồng thời chạy `pgtbltest` trên bản tích hợp. Khi đủ ba tính năng,
 bỏ điều kiện `if` của job `pgtbl` để bật kiểm tra tự động cho push/PR.

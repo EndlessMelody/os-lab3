@@ -1,0 +1,3 @@
+make: 'kernel/kernel' is up to date.
+== Test ugetpid == ugetpid: OK (1.0s)
+    (Old artifacts/lab3/ugetpid.txt.ugetpid failure log removed)

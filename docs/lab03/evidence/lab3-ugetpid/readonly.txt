@@ -1,0 +1,12 @@
+*** Now run 'gdb' in another window.
+
+xv6 kernel is booting
+
+hart 1 starting
+hart 2 starting
+init: starting sh
+$ ugetpidcheck readonly
+usertrap(): unexpected scause 0xf pid=4
+            sepc=0x1e2 stval=0x3fffffd000
+UGETPID_READONLY_OK
+$ qemu-system-riscv64: terminating on signal 15 from pid 21038 (make)

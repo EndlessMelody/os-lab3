@@ -41,12 +41,16 @@ chưa phải bài Lab 3 hoàn thành. Hạn nội bộ: code **27/11/2026**, bá
 
 `conf/lab.mk` dùng `LAB=pgtbl`. Giữ hai user stack pages như Lab 1–2 để các tiện ích
 đệ quy tiếp tục hoạt động. Đã có `USYSCALL`/`struct usyscall`, helper user `ugetpid`,
-`SYS_pgaccess=25`, prototype, stub và dispatch. `sys_pgaccess()` hiện trả `-1`;
-chưa cấp phát/map shared page, chưa có `vmprint` và chưa xử lý `PTE_A`.
+`SYS_pgaccess=25`, prototype, stub và dispatch. **Nhánh `lab3-ugetpid` đã triển khai
+phần 4.1**, gồm cấp phát, mapping read-only và giải phóng shared page theo vòng đời
+tiến trình. [Ghi chú bàn giao 4.1](docs/lab03/UGETPID.md) có thiết kế, test và nội dung
+chuẩn bị báo cáo. `sys_pgaccess()` vẫn trả `-1`; `vmprint` và xử lý `PTE_A` chờ
+hai nhánh thành viên còn lại.
 
 ```sh
 python3 tools/verify-lab03.py         # Clean build + hồi quy Lab 1, trace, Lab 2.
 ./grade-lab-pgtbl ugetpid             # Test riêng 4.1.
+make check-ugetpid                   # 4.1: quyền trang, exec, OOM và rò rỉ.
 ./grade-lab-pgtbl vmprint             # Test riêng 4.2.
 ./grade-lab-pgtbl pgaccess            # Test riêng 4.3.
 make grade                          # Cả ba phần Lab 3, sau khi triển khai.
@@ -59,7 +63,11 @@ từng phần. `make check-lab03` cũng chạy bộ chấm Lab 3. `grade-lab-pgt
 của giảng viên/MIT**. Cần bổ sung test quyền trang và tham số lỗi. Ở bộ khung ban
 đầu, ba test Lab 3 dự kiến FAIL vì chưa triển khai nhiệm vụ kernel.
 
-CI tự chạy build + hồi quy khi push ba branch hoặc mở PR vào `main`; log lưu trong
+Trên nhánh `lab3-ugetpid`, test 4.1 phải PASS; test toàn bài vẫn chờ 4.2 và 4.3.
+`make check-ugetpid` còn kiểm tra `ugetpid` không gọi syscall, page padding sạch,
+nhiều PID đồng thời, fork/exec/exit, quyền R/W/X và thu hồi khi thiếu bộ nhớ.
+
+CI trên nhánh này chạy thêm `make check-ugetpid` sau build + hồi quy khi push hoặc mở PR vào `main`; log lưu trong
 GitHub Actions artifacts. Chạy workflow thủ công và chọn ô `pgtbl` để bật thêm job chấm Page Table;
 job này phải đạt trước code freeze. CI hồi quy xanh chưa xác nhận Lab 3 hoàn thành.
 Log local ở `artifacts/`, không tự commit. Chỉ commit minh chứng đã chọn vào

@@ -1,0 +1,35 @@
+Lab 3 — Page Table
+Phần 4.1 — Đăng Khoa, branch lab3-ugetpid
+
+Câu hỏi: Những system call nào khác trong xv6 có thể được tăng tốc bằng trang
+chia sẻ chỉ đọc? Giải thích.
+
+uptime() là một ứng viên vì chỉ đọc số tick kể từ lúc hệ thống khởi động. Kernel
+có thể xuất bản giá trị tick trong vùng user chỉ đọc, cập nhật khi tick thay đổi;
+hàm phía user đọc giá trị thay vì thực hiện ecall. Cần xác định cách cập nhật
+hiệu quả: nếu sao chép tick vào từng trang của từng process mỗi lần ngắt timer,
+chi phí cập nhật có thể lớn hơn lợi ích. Một trang thời gian dùng chung toàn hệ
+thống là một phương án khác, nếu thông tin đó được phép công khai cho mọi process.
+
+sysinfo() đã triển khai ở Lab 2 cũng có thể cung cấp snapshot số byte bộ nhớ
+trống và số process qua trang chia sẻ. Tuy nhiên, các bộ đếm này thay đổi liên
+tục; đây không phải phép thay thế trực tiếp nếu giao diện đòi kết quả mới nhất
+và nhất quán. Cần cập nhật các bộ đếm đúng lúc, hoặc quy định rõ độ trễ của
+snapshot. Nếu nhiều trường được cập nhật riêng rẽ, cần cơ chế phiên bản/sequence
+counter cùng thứ tự đọc/ghi phù hợp để user không ghép dữ liệu từ hai snapshot.
+
+Điều kiện chung: syscall chỉ truy vấn dữ liệu, không cần thực hiện tác động mới
+trong kernel; thông tin được phép cung cấp cho process đó; user không được sửa
+trang; giá trị phải được kernel cập nhật đúng và đọc nhất quán. Các syscall có
+tác động như fork(), exec(), write() hoặc trace(mask) vẫn cần vào kernel.
+
+getpid() phù hợp nhất trong bài này vì PID không thay đổi trong vòng đời process,
+kể cả sau exec(). Mỗi process có một trang vật lý riêng được khởi tạo khi
+allocproc(), nên fork() nhận PID của child thay vì giữ PID của parent. Mapping
+user có PTE_U | PTE_R (không PTE_W/PTE_X); phần còn lại của trang được xóa sạch
+để tránh lộ dữ liệu allocator. proc_freepagetable() chỉ bỏ mapping; freeproc()
+giải phóng trang đúng một lần khi thu hồi process. Đổi lại, mỗi process giữ thêm
+một trang vật lý 4096 byte cho đến lúc được wait()/thu hồi.
+
+Các phương án uptime/sysinfo ở trên là đề xuất giải thích; nhánh này chỉ triển
+khai shared page chứa PID theo yêu cầu 4.1.

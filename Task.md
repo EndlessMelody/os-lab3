@@ -10,15 +10,16 @@ Ngày chuẩn bị: 25/11/2026. Chỉ đánh dấu kết quả code, test và re
 - [x] Dọn tài nguyên lab cũ khỏi cây làm việc; bảo toàn bằng tag `lab3-base`.
 - [x] Đổi cấu hình và hướng dẫn sang repository `EndlessMelody/os-lab3`.
 - [x] Chuẩn bị giao diện chung, test nội bộ, CI build + hồi quy và mẫu PR.
-- [x] Build sạch và 33 nhóm test hồi quy đạt; Page Table 0/100 đúng trạng thái scaffold.
+- [x] Build sạch và 33 nhóm test hồi quy đạt; Page Table 0/100 ở baseline scaffold `lab3-start`.
 - [x] Đã push `main`, `lab3-base`, `lab3-start` và ba branch cá nhân lên GitHub.
 
 ## Đăng Khoa — 4.1, branch `lab3-ugetpid`
 
-- [ ] Cấp phát/khởi tạo shared page theo PID, map `USYSCALL` với `PTE_U | PTE_R`.
-- [ ] Xử lý free/unmap, nhánh lỗi, fork/exec/exit và tái sử dụng process slot.
-- [ ] `pgtbltest ugetpid` đạt; bổ sung test quyền user read-only và vòng đời.
-- [ ] Commit code, log test và phần báo cáo 4.1; trả lời câu hỏi shared page.
+- [x] Cấp phát/khởi tạo shared page theo PID, map `USYSCALL` với `PTE_U | PTE_R`.
+- [x] Xử lý free/unmap, nhánh lỗi, fork/exec/exit và tái sử dụng process slot.
+- [x] `pgtbltest ugetpid` đạt; bổ sung test quyền user read-only và vòng đời.
+- [x] Commit/push code `cf9756f` trên `lab3-ugetpid`; lưu log tại `docs/lab03/evidence/lab3-ugetpid/`.
+- [x] Chuẩn bị nội dung báo cáo 4.1 trong `docs/lab03/UGETPID.md` và trả lời câu hỏi shared page trong `answers-pgtbl.txt`.
 - [ ] Review `pgaccess` của Nhựt Duy; chuẩn bị source ZIP sạch khi chốt.
 
 ## Bảo Trân — 4.2, branch `lab3-vmprint`
