@@ -24,7 +24,7 @@
 #endif
 #define MAXPATH      128   // maximum file path name
 
-#ifdef LAB_UTIL
+#if defined(LAB_UTIL) || defined(LAB_PGTBL)
 #define USERSTACK    2     // user stack pages
 #else
 #define USERSTACK    1     // user stack pages

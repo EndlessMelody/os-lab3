@@ -140,3 +140,11 @@ sys_ptree(void)
 
   return ptree(addr, max);
 }
+
+// Lab 3 task 4.3: replace this scaffold with argument validation, PTE_A
+// collection/clearing and copyout. Returning failure keeps the base buildable.
+uint64
+sys_pgaccess(void)
+{
+  return -1;
+}

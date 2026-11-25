@@ -1,45 +1,46 @@
-# Lab 2 — System Call
+# Lab 3 — Checklist triển khai và bàn giao
 
-Source of requirements: [Lab2_OS_System_Call.docx](Lab2_OS_System_Call.docx). All three member branches have been received, technically reviewed and integrated. See [integration review](docs/lab02/REVIEW.md) and [report](docs/lab02/REPORT.md). The previous Lab 1 plan is preserved in [docs/lab01/Task.md](docs/lab01/Task.md).
+Đối chiếu [đề chính thức](Lab3_OS_PageTable.pdf),
+[phân công](Lab3_PageTable_PhanCong.html) và [TEAM.md](docs/lab03/TEAM.md).
+Ngày chuẩn bị: 25/11/2026. Chỉ đánh dấu kết quả code, test và review khi có minh chứng.
 
-## 1. Trace
+## DevOps
 
-- [x] Add `int trace(int mask)` to the user interface, syscall number, stub, and kernel dispatch.
-- [x] Store a trace mask per process, initialize it for new processes, and copy it on `fork`.
-- [x] After a selected syscall returns, print PID, syscall name, and return value.
-- [x] Keep tracing enabled across `exec` and inherited by descendants; other processes must remain unaffected.
-- [x] Write `user/trace.c` and add `$U/_trace` to `UPROGS`.
-- [x] Check `trace 32 grep hello README`, `trace 2147483647 grep hello README`, ordinary `grep hello README`, and `trace 2 usertests forkforkfork`.
-- [x] Test invalid usage, disabling the mask, and process-slot reuse.
+- [x] Giữ lịch sử Lab 1–2, baseline `1c503f0afc41a203de08b4cc66dadb1db506f7df`.
+- [x] Dọn tài nguyên lab cũ khỏi cây làm việc; bảo toàn bằng tag `lab3-base`.
+- [x] Đổi cấu hình và hướng dẫn sang repository `EndlessMelody/os-lab3`.
+- [x] Chuẩn bị giao diện chung, test nội bộ, CI build + hồi quy và mẫu PR.
+- [x] Build sạch và 33 nhóm test hồi quy đạt; Page Table 0/100 đúng trạng thái scaffold.
+- [ ] Push `main`, `lab3-base`, `lab3-start` và ba branch cá nhân lên GitHub.
 
-## 2. Sysinfo
+## Đăng Khoa — 4.1, branch `lab3-ugetpid`
 
-- [x] Define shared `struct sysinfo` with `freemem` (free bytes) and `nproc` (processes whose state is not `UNUSED`).
-- [x] Add `int sysinfo(struct sysinfo *)`, its syscall number, stub, and kernel dispatch.
-- [x] Count the allocator's free pages and active processes using the appropriate locks.
-- [x] Copy the result into user memory with `copyout`; report invalid pointers as errors.
-- [x] Write `user/sysinfotest.c`, add `$U/_sysinfotest` to `UPROGS`, and require `sysinfotest: OK` on success.
-- [x] Test memory allocation/free, process creation/exit, and invalid user addresses.
+- [ ] Cấp phát/khởi tạo shared page theo PID, map `USYSCALL` với `PTE_U | PTE_R`.
+- [ ] Xử lý free/unmap, nhánh lỗi, fork/exec/exit và tái sử dụng process slot.
+- [ ] `pgtbltest ugetpid` đạt; bổ sung test quyền user read-only và vòng đời.
+- [ ] Commit code, log test và phần báo cáo 4.1; trả lời câu hỏi shared page.
+- [ ] Review `pgaccess` của Nhựt Duy; chuẩn bị source ZIP sạch khi chốt.
 
-## 3. Process tree
+## Bảo Trân — 4.2, branch `lab3-vmprint`
 
-- [x] Define shared `struct ptreeinfo` with `pid`, `ppid`, `state`, `uint64 memsize`, and `char name[16]`.
-- [x] Add `int ptree(struct ptreeinfo *buf, int max)`, its syscall number, stub, and dispatch.
-- [x] Collect up to `max` non-`UNUSED` processes in the kernel, respecting process and parent-pointer locking.
-- [x] Return the number of entries copied, or `-1` on invalid arguments or copy errors.
-- [x] Handle `max <= 0`, invalid buffers, and more processes than available entries without overflowing the user buffer.
-- [x] Write `user/pstree.c`, add `$U/_pstree` to `UPROGS`, and construct the indented parent/child display in user space.
-- [x] Display PID, name, state, and user-memory size; test multiple generations and a truncated snapshot.
+- [ ] Viết `vmprint` đệ quy, bỏ PTE invalid, phân biệt leaf, in đúng format `%p`.
+- [ ] Khai báo `defs.h`, gọi trong `exec.c` khi PID = 1 trước `return argc`.
+- [ ] Test `vmprint` đạt; phân tích từng leaf theo layout thực tế (hai stack pages).
+- [ ] Review `ugetpid` của Đăng Khoa; tích hợp đủ ba phần sau review.
+- [ ] Viết phần 4.2, tổng hợp báo cáo PDF và minh chứng tích hợp.
 
-## 4. Integration and hand-in
+## Nhựt Duy — 4.3, branch `lab3-pgaccess`
 
-Theo yêu cầu ngày 04/11/2026, đã rà soát kỹ thuật, tích hợp ba nhánh và chuẩn bị báo cáo. Không xác nhận thay các thành viên rằng review chéo cá nhân đã có biên bản. Đóng gói và nộp MOODLE chưa được thực hiện trong yêu cầu này.
+- [ ] Thay stub `sys_pgaccess`, định nghĩa `PTE_A` bit 6, kiểm tra địa chỉ/số trang/buffer.
+- [ ] Dùng mask `uint` 32 bit, `walk`, xóa accessed bit và `copyout` kết quả.
+- [ ] `pgtbltest pgaccess` đạt; bổ sung test tham số lỗi, biên mask và gọi lặp lại.
+- [ ] Review `vmprint` của Bảo Trân; viết phần 4.3 và tổng kết/hạn chế.
+- [ ] Tạo patch từ `lab3-base`, tổng hợp `answers-*.txt`, kiểm tra gói nộp.
 
-- [x] Coordinate distinct syscall numbers and shared-file edits across the three features; see `docs/lab02/TEAM.md`.
-- [x] Build from clean source and verify all three features together in QEMU.
-- [x] Re-run `make check-lab01` on `lab2-trace` to check inherited utilities; repeat on the final three-feature integration.
-- [x] Record reproducible test commands, actual results, limitations, and each member's contribution.
-- [x] Write a concise PDF report named `StudentID1_StudentID2_StudentID3_Report.pdf`.
-- [ ] Generate a patch from the agreed baseline, including all newly committed source files, and verify it applies to that baseline.
-- [ ] Run `make clean`, create the xv6 source ZIP, and verify the final archive contains the PDF, `Realease/` patch, and `Source/` ZIP.
-- [ ] Sort student IDs ascending in the final ZIP name and submit through MOODLE.
+## Chốt chung — code 27/11, báo cáo 29/11/2026
+
+- [ ] Chạy `pgtbltest`, `make grade` và hồi quy trên cùng commit tích hợp; lưu log.
+- [ ] Review chéo đầy đủ; mỗi thành viên xác nhận nội dung báo cáo phần mình.
+- [ ] Tạo PDF, patch `Realease/`, ZIP source đã `make clean`, đáp án và ZIP ngoài.
+- [ ] Kiểm tra patch áp dụng được vào baseline, source ZIP build được và MSSV tăng dần.
+- [ ] Xác nhận hạn/người nộp; nộp Moodle và kiểm tra kết quả upload.

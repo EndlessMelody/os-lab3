@@ -1,0 +1,57 @@
+name: Lab 3 build and regression
+
+on:
+  push:
+    branches: [main, lab3-ugetpid, lab3-vmprint, lab3-pgaccess]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lab3-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install xv6 toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu qemu-system-misc gdb-multiarch perl python3
+      - name: Clean build and inherited Lab 1-2 checks
+        run: python3 tools/verify-lab03.py
+      - name: Upload verification logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-${{ github.sha }}
+          path: artifacts/
+          if-no-files-found: warn
+
+  # Full Page Table grading is opt-in during scaffolding, then must be run
+  # before integration is accepted. See docs/lab03/TEAM.md.
+  pgtbl:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install xv6 toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu qemu-system-misc gdb-multiarch perl python3
+      - name: Grade all three Page Table requirements
+        run: make grade
+      - name: Upload Page Table logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pgtbl-${{ github.sha }}
+          path: artifacts/
+          if-no-files-found: warn

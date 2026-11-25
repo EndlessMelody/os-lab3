@@ -1,7 +1,17 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "kernel/fcntl.h"
+#include "kernel/riscv.h"
+#include "kernel/memlayout.h"
 #include "user/user.h"
+
+// User helper described as supplied by the course assignment.
+// Task 4.1 must supply the read-only per-process mapping before this can run.
+int
+ugetpid(void)
+{
+  return ((struct usyscall *)USYSCALL)->pid;
+}
 
 //
 // wrapper so that it's OK if main() does not call exit().

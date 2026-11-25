@@ -4,14 +4,14 @@
 from pathlib import Path
 from gradelib import *
 
-Path('docs/lab02/validation').mkdir(parents=True, exist_ok=True)
+Path('artifacts/regression/lab02').mkdir(parents=True, exist_ok=True)
 r = Runner()
 
 
 @test(10, 'Lab02 complete xv6 quick kernel regression')
 def test_kernel():
     maybe_unlink('fs.img')
-    r.run_qemu(save('docs/lab02/validation/qemu-usertests.txt'),
+    r.run_qemu(save('artifacts/regression/lab02/qemu-usertests.txt'),
                shell_script(['usertests -q']), timeout=600)
     r.match('ALL TESTS PASSED', no=['FAILED', 'panic:'])
 

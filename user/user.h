@@ -26,6 +26,8 @@ int sleep(int);
 int uptime(void);
 int trace(int);
 int ptree(struct ptreeinfo *, int);
+int pgaccess(void *, int, void *);
+int ugetpid(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

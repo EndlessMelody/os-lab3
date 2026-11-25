@@ -7,7 +7,7 @@ from pathlib import Path
 from gradelib import *
 
 r = Runner()
-evidence = Path('docs/lab02/validation')
+evidence = Path('artifacts/regression/lab02')
 evidence.mkdir(parents=True, exist_ok=True)
 
 

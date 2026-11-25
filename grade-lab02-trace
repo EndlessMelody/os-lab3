@@ -3,9 +3,12 @@
 
 import re
 import subprocess
+from pathlib import Path
 from gradelib import *
 
 r = Runner()
+evidence = Path('artifacts/regression/lab02')
+evidence.mkdir(parents=True, exist_ok=True)
 
 
 def boot(group, commands, helper=False, timeout=45):
@@ -15,7 +18,7 @@ def boot(group, commands, helper=False, timeout=45):
         args = ['UEXTRA=user/xargstest.sh user/_tracecheck']
     # Rebuild the filesystem so tests start without files from previous runs.
     maybe_unlink('fs.img')
-    r.run_qemu(save('docs/lab02/trace-' + group + '.txt'),
+    r.run_qemu(save(str(evidence / ('trace-' + group + '.txt'))),
                shell_script(commands), make_args=args, timeout=timeout)
     r.match(no=['TRACECHECK_FAIL:', 'panic:', r'usertrap\('])
 

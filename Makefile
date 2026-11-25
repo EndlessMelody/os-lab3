@@ -297,7 +297,7 @@ UPROGS += \
 endif
 
 UEXTRA=
-ifeq ($(LAB),util)
+ifneq ($(filter $(LAB),util pgtbl),)
 	UEXTRA += user/xargstest.sh
 endif
 
@@ -385,6 +385,15 @@ check-trace:
 check-lab02:
 	./grade-lab02
 
+check-lab03:
+	./grade-lab-pgtbl $(GRADEFLAGS)
+
+# Always execute in order: the graders share fs.img and QEMU's GDB port.
+check-regression:
+	$(MAKE) check-lab01
+	$(MAKE) check-trace
+	$(MAKE) check-lab02
+
 ##
 ## FOR submissions
 ##
@@ -414,4 +423,4 @@ submit-check:
 zipball: clean submit-check
 	git archive --verbose --format zip --output lab.zip HEAD
 
-.PHONY: zipball clean grade check-lab01 check-trace check-lab02 submit-check
+.PHONY: zipball clean grade check-lab01 check-trace check-lab02 check-lab03 check-regression submit-check

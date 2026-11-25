@@ -25,3 +25,6 @@
 #define SYS_trace   22
 #define SYS_sysinfo 23
 #define SYS_ptree   24
+
+// Lab 3: keep inherited Lab 2 syscall IDs unchanged.
+#define SYS_pgaccess 25

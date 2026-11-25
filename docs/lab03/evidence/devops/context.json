@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-25",
+  "timezone": "Asia/Bangkok",
+  "lab2_base": "1c503f0afc41a203de08b4cc66dadb1db506f7df",
+  "lab_config": "# Course Project 3: shared USYSCALL page, vmprint and pgaccess.\nLAB=pgtbl",
+  "regression_groups_passed": 33,
+  "pgtbl_scaffold_score": "0/100 (expected: kernel tasks not implemented)",
+  "verified_source": "source-sha256.json",
+  "environment": {
+    "gcc": "riscv64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "python": "Python 3.12.3"
+  },
+  "logs_sha256": {
+    "build.txt": "b433fc1ea5f024ef12b4bc694b0faf302da97a90752a99e5a10f9d8b692050ba",
+    "clean.txt": "0d2214c6ece7e8a15131edc65cea5b6fd1238f852875531b51699f6d51c15265",
+    "lab01.txt": "3d95d983eb620d140b5e59b3752b0bd3671b17e012ae50999bd454146c6e132d",
+    "lab02.txt": "37dfa6b34f270d1c49069af5a68c5023e492bdd4c61f7c23b73444fb7273e8a6",
+    "pgtbl-scaffold.txt": "edb77401b3e846c635ad5830ac809ac6dfdfdc9fcb5b5b8ef36778a801932301",
+    "trace.txt": "6ce0a861979988cd00dc39ac4944a852a8868f6fc2a98fc7838fe4f200efa831"
+  }
+}

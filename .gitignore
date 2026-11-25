@@ -25,3 +25,10 @@ barrier
 .DS_Store
 *.dSYM
 *.pcap
+
+# Local verification and editor caches; final evidence is selected explicitly.
+/artifacts/
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
