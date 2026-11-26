@@ -449,3 +449,33 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
     return -1;
   }
 }
+// Print valid entries without changing the page table.
+static void
+vmprint_entries(pagetable_t pagetable, int depth)
+{
+  for(int i = 0; i < 512; i++){
+    pte_t pte = pagetable[i];
+
+    if((pte & PTE_V) == 0)
+      continue;
+
+    uint64 pa = PTE2PA(pte);
+
+    for(int j = 0; j < depth; j++)
+      printf(" ..");
+
+    printf("%d: pte %p pa %p\n",
+           i, (void *)pte, (void *)pa);
+
+    // No R/W/X bits means this entry points to another page table.
+    if((pte & (PTE_R | PTE_W | PTE_X)) == 0)
+      vmprint_entries((pagetable_t)pa, depth + 1);
+  }
+}
+
+void
+vmprint(pagetable_t pagetable)
+{
+  printf("page table %p\n", (void *)pagetable);
+  vmprint_entries(pagetable, 1);
+}
