@@ -141,10 +141,80 @@ sys_ptree(void)
   return ptree(addr, max);
 }
 
-// Lab 3 task 4.3: replace this scaffold with argument validation, PTE_A
-// collection/clearing and copyout. Returning failure keeps the base buildable.
+// Detect user pages accessed since the previous successful call.
 uint64
 sys_pgaccess(void)
 {
-  return -1;
+  uint64 base, mask_addr, len, va;
+  int npages;
+  uint mask = 0;
+  pte_t *pte;
+  struct proc *p = myproc();
+
+  // Retrieve system call arguments.
+  argaddr(0, &base);
+  argint(1, &npages);
+  argaddr(2, &mask_addr);
+
+  // A 32-bit mask can represent at most 32 pages.
+  if(npages <= 0 || npages > 32)
+    return -1;
+
+  // Require a page-aligned starting address.
+  if(base % PGSIZE != 0)
+    return -1;
+
+  // Validate the entire scanned range without integer overflow.
+  len = (uint64)npages * PGSIZE;
+  if(base >= MAXVA || len > MAXVA - base)
+    return -1;
+
+  if(base >= p->sz || len > p->sz - base)
+    return -1;
+
+  // Validate the output buffer.
+  if(mask_addr >= MAXVA || sizeof(mask) > MAXVA - mask_addr)
+    return -1;
+
+  if(mask_addr >= p->sz || sizeof(mask) > p->sz - mask_addr)
+    return -1;
+
+  // Check every page covered by the output buffer.
+  for(va = PGROUNDDOWN(mask_addr);
+      va <= PGROUNDDOWN(mask_addr + sizeof(mask) - 1);
+      va += PGSIZE){
+    pte = walk(p->pagetable, va, 0);
+    if(pte == 0 || (*pte & PTE_V) == 0 ||
+       (*pte & PTE_U) == 0 || (*pte & PTE_W) == 0)
+      return -1;
+  }
+
+  // Validate scanned pages and collect their accessed bits.
+  for(int i = 0; i < npages; i++){
+    va = base + (uint64)i * PGSIZE;
+    pte = walk(p->pagetable, va, 0);
+
+    if(pte == 0 || (*pte & PTE_V) == 0 ||
+       (*pte & PTE_U) == 0 || !PTE_LEAF(*pte))
+      return -1;
+
+    if(*pte & PTE_A)
+      mask |= (1U << i);
+  }
+
+  // Return the bitmask to user space.
+  if(copyout(p->pagetable, mask_addr,
+             (char *)&mask, sizeof(mask)) < 0)
+    return -1;
+
+  // Clear accessed bits only after successful copyout.
+  for(int i = 0; i < npages; i++){
+    if(mask & (1U << i)){
+      va = base + (uint64)i * PGSIZE;
+      pte = walk(p->pagetable, va, 0);
+      *pte &= ~PTE_A;
+    }
+  }
+
+  return 0;
 }
